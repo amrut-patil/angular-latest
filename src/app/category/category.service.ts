@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Category } from './Category';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,12 +8,27 @@ import { Category } from './Category';
 export class CategoryService {
 
   private categories: Category[] = [];
+  private url: string = "http://localhost:8080/category";
+  private headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   public save(category: Category) {
     this.populatePath(category);
     this.categories.push(category);
+
+    this.http.get(this.url).subscribe((data) => {
+      console.log("---------- Get Respone ----------");
+      console.log(data);
+    });
+
+    this.http.post(
+      this.url,
+      JSON.stringify(category),
+      { headers: this.headers }).subscribe((data) => {
+        console.log("---------- Post Respone ----------");
+        console.log(data);
+      });
   }
 
   private populatePath(category: Category) {
