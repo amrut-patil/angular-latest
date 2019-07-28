@@ -26,4 +26,8 @@ export class CategoryListComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  getRecord(selectedRecord) {
+    this.categoryService.getCategoryMessage(selectedRecord.name);
+  }
 }

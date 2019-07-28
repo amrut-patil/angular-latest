@@ -1,8 +1,18 @@
-<mat-grid-list cols="2" style="height: 100%">
+<!-- <mat-grid-list cols="2">
+    <mat-grid-tile [colspan]="1" [rowspan]="1" style="height: 100%; overflow-y: scroll;">
+        <app-category-list></app-category-list>
+    </mat-grid-tile>
     <mat-grid-tile [colspan]="1" [rowspan]="1">
         <app-category-entry></app-category-entry>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="1" style="height: 100%">
+</mat-grid-list> -->
+
+<mat-grid-list cols="2">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">       
         <app-category-list></app-category-list>
     </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <app-category-entry></app-category-entry>
+    </mat-grid-tile>
 </mat-grid-list>
+<!-- <app-category-list></app-category-list> -->

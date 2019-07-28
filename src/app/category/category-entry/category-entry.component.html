@@ -1,8 +1,11 @@
+<mat-toolbar color="primary">
+    <span>Category</span>
+</mat-toolbar>
 <form [formGroup]="categoryForm" (ngSubmit)="onSave()">
     <div class="fields-container">
         <mat-form-field floatLabel="always">
             <mat-label>Category</mat-label>
-            <input formControlName="name" matInput>
+            <input formControlName="name" matInput required>
         </mat-form-field>
 
         <mat-form-field floatLabel="always">
@@ -12,6 +15,11 @@
         <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of parents" [value]="option">{{option}}</mat-option>
         </mat-autocomplete>
+
     </div>
-    <button type="submit" class="save-button" mat-raised-button>Save</button>
+    <div style="display: flex">
+        <button type="button" class="new-button" (click)="newCategory()" mat-raised-button>New</button>
+        <button type="submit" class="save-button" color="primary" [disabled]="categoryForm.invalid"
+            mat-raised-button>Save</button>
+    </div>
 </form>

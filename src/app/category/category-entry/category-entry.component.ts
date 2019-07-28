@@ -10,6 +10,7 @@ import { Category } from '../category';
 })
 export class CategoryEntryComponent implements OnInit {
 
+  private category: Category;
   public categoryForm = new FormGroup({
     name: new FormControl(''),
     parent: new FormControl('')
@@ -17,22 +18,32 @@ export class CategoryEntryComponent implements OnInit {
 
   public parents: string[] = [];
 
-  constructor(private categoryService: CategoryService) { }
+  constructor(private categoryService: CategoryService) {
+    this.category = new Category();
+  }
 
   ngOnInit() {
+    this.getSavedCategory();
     this.populateParents();
   }
 
+  newCategory() {
+    this.category = new Category();
+    this.categoryForm.reset();
+  }
+
   onSave() {
-    let category: Category = new Category();
-    category.name = this.categoryForm.value['name'];
-    category.parent = this.categoryForm.value['parent']
-    this.categoryService.save(category);
+    this.category.name = this.categoryForm.value['name'];
+    this.category.parent = this.categoryForm.value['parent']
+    this.categoryService.save(this.category).then(((category) => {
+      this.category = category;
+    })).catch(((error) => {
+      console.log(error);
+    }));
 
     setTimeout(() => {
       this.populateParents();
     }, 100);
-
   }
 
   private populateParents() {
@@ -40,6 +51,18 @@ export class CategoryEntryComponent implements OnInit {
       this.parents = [];
       data.forEach((category: Category) => {
         this.parents.push(category.name);
+      })
+    })
+  }
+
+  private getSavedCategory() {
+    this.categoryService.getCategorySource.subscribe(categoryName => {
+      this.categoryService.getCategory(categoryName).then((category) => {
+        this.category = category;
+        this.categoryForm.setValue({
+          name: category.name,
+          parent: category.parent
+        });
       })
     })
   }

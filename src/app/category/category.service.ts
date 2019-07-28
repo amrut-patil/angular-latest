@@ -1,36 +1,62 @@
 import { Injectable } from '@angular/core';
 import { Category } from './Category';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 
-  private url: string = "http://localhost:8080/category";
+  private url: string = "http://localhost:8080";
   private headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+  public getCategorySource = new Subject<string>();
 
   constructor(private http: HttpClient) { }
 
-  public save(category: Category) {
+  public save(category: Category): Promise<Category> {
 
-    // this.http.get(this.url).subscribe((data) => {
-    //   console.log("---------- Get Respone ----------");
-    //   console.log(data);
-    // });
+    let promise = new Promise<Category>((resolve, reject) => {
+      this.http.post(
+        this.url + "/category",
+        JSON.stringify(category),
+        { headers: this.headers }).subscribe(
+          (category) => {
+            console.log(category);
+            resolve(category as Category);
+          },
+          (error: HttpErrorResponse) => {
+            console.error(error)
+            reject(error);
+          });
+    });
 
-    this.http.post(
-      this.url,
-      JSON.stringify(category),
-      { headers: this.headers }).subscribe((data) => {
-        console.log("---------- Post Respone ----------");
-        console.log(data);
-      });
+    return promise;
+  }
+
+  public getCategory(categoryName: string): Promise<Category> {
+    let promise = new Promise<Category>((resolve, reject) => {
+      this.http.get<Category>(
+        this.url + "/category/" + categoryName,
+        { headers: this.headers }).subscribe(
+          (category) => {
+            resolve(category as Category);
+          },
+          (error: HttpErrorResponse) => {
+            console.error(error)
+            reject(error);
+          });
+    });
+
+    return promise;
   }
 
   public getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>("http://localhost:8080/categories", { headers: this.headers })
+    return this.http.get<Category[]>(this.url + "/categories", { headers: this.headers });
+  }
+
+  public getCategoryMessage(categoryName: string) {
+    this.getCategorySource.next(categoryName);
   }
 
 }
