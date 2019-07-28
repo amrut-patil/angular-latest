@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SystemJsNgModuleLoader } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CategoryService } from '../category.service';
 import { Category } from '../category';
@@ -20,10 +20,7 @@ export class CategoryEntryComponent implements OnInit {
   constructor(private categoryService: CategoryService) { }
 
   ngOnInit() {
-    let self = this;
-    setTimeout(() => {
-      self.parents = self.categoryService.getCategoryNames();
-    }, 0);
+    this.populateParents();
   }
 
   onSave() {
@@ -32,7 +29,19 @@ export class CategoryEntryComponent implements OnInit {
     category.parent = this.categoryForm.value['parent']
     this.categoryService.save(category);
 
-    this.parents = this.categoryService.getCategoryNames();
+    setTimeout(() => {
+      this.populateParents();
+    }, 100);
+
+  }
+
+  private populateParents() {
+    this.categoryService.getCategories().subscribe((data: Category[]) => {
+      this.parents = [];
+      data.forEach((category: Category) => {
+        this.parents.push(category.name);
+      })
+    })
   }
 
 }

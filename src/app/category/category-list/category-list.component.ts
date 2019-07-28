@@ -15,19 +15,15 @@ export class CategoryListComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'parent', 'path'];
   public dataSource: Category[] = [];
 
-  constructor(private categoryService: CategoryService) {
-    this.dataSource = this.categoryService.getCategories();
-  }
+  constructor(private categoryService: CategoryService) { }
 
   public refreshCategories() {
-    this.table.renderRows();
+    this.categoryService.getCategories().subscribe((categories: Category[]) => {
+      this.dataSource = categories;
+      this.table.renderRows();
+    })
   }
 
   ngOnInit() {
-    for (let index = 0; index < 5; index++) {
-      let category = new Category();
-      category.name = "Category " + index;
-      this.categoryService.save(category);
-    }
   }
 }
