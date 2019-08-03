@@ -2,6 +2,7 @@ import { Component, OnInit, SystemJsNgModuleLoader } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CategoryService } from '../category.service';
 import { Category } from '../category';
+import { debounceTime, switchMap, tap, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-category-entry',
@@ -15,11 +16,27 @@ export class CategoryEntryComponent implements OnInit {
     name: new FormControl(''),
     parent: new FormControl('')
   });
+  public filteredCategories;
+  isLoading = false;
 
   public parents: string[] = [];
 
   constructor(private categoryService: CategoryService) {
     this.category = new Category();
+
+    let self = this;
+    this.filteredCategories = this.categoryForm
+      .get('parent')
+      .valueChanges
+      .pipe(
+        debounceTime(300),
+        tap(() => this.isLoading = true),
+        switchMap(value => this.categoryService.getCategories({ name: value })
+          .pipe(
+            finalize(() => self.isLoading = false),
+          )
+        )
+      );
   }
 
   ngOnInit() {
@@ -33,17 +50,27 @@ export class CategoryEntryComponent implements OnInit {
   }
 
   onSave() {
-    this.category.name = this.categoryForm.value['name'];
-    this.category.parent = this.categoryForm.value['parent']
-    this.categoryService.save(this.category).then(((category) => {
-      this.category = category;
-    })).catch(((error) => {
-      console.log(error);
-    }));
+    for (let index = 1; index < 51; index++) {
+      let acateg = new Category();
+      acateg.name = " Test " + index;
+      this.categoryService.save(acateg).then(((category) => {
+        this.category = category;
+      })).catch(((error) => {
+        console.log(error);
+      }));
+    }
 
-    setTimeout(() => {
-      this.populateParents();
-    }, 100);
+    // this.category.name = this.categoryForm.value['name'];
+    // this.category.parent = this.categoryForm.value['parent']
+    // this.categoryService.save(this.category).then(((category) => {
+    //   this.category = category;
+    // })).catch(((error) => {
+    //   console.log(error);
+    // }));
+
+    // setTimeout(() => {
+    //   this.populateParents();
+    // }, 100);
   }
 
   private populateParents() {

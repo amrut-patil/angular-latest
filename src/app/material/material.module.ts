@@ -7,6 +7,7 @@ import {
   MatAutocompleteModule,
   MatGridListModule,
   MatTableModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 const MaterialComponents = [
@@ -16,7 +17,8 @@ const MaterialComponents = [
   MatButtonModule,
   MatGridListModule,
   MatTableModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatProgressSpinnerModule
 ]
 
 @NgModule({

@@ -25,6 +25,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.refreshCategories();
   }
 
   getRecord(selectedRecord) {

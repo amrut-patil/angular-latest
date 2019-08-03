@@ -12,9 +12,16 @@
             <mat-label>Parent</mat-label>
             <input type="text" matInput formControlName="parent" [matAutocomplete]="auto">
         </mat-form-field>
-        <mat-autocomplete #auto="matAutocomplete">
+        <!-- <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of parents" [value]="option">{{option}}</mat-option>
-        </mat-autocomplete>
+        </mat-autocomplete> -->
+        <mat-autocomplete #auto="matAutocomplete" >
+            <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+            <mat-option *ngFor="let category of (filteredCategories | async)" [value]="category.name">
+              <span>{{ category.name }}</span>
+              <small> | {{category.parent}}</small>
+            </mat-option>
+          </mat-autocomplete>
 
     </div>
     <div style="display: flex">

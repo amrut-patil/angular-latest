@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Category } from './Category';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -51,8 +51,8 @@ export class CategoryService {
     return promise;
   }
 
-  public getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(this.url + "/categories", { headers: this.headers });
+  public getCategories(filter?): Observable<Category[]> {
+    return this.http.get<Category[]>(this.url + "/categories/" + (filter && filter.name ? filter.name : ''), { headers: this.headers });
   }
 
   public getCategoryMessage(categoryName: string) {
