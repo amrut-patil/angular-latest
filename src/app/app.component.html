@@ -1,4 +1,7 @@
-<div style="display: flex; overflow: hidden; height: 100%; width: 100%;">
-    <app-category-list style="overflow: auto; height: 100%; width: 100%; "></app-category-list>
-    <app-category-entry></app-category-entry>
-</div>
+<nav>
+    <a [routerLink]="['/categories']" routerLinkActive="router-link-active" >Category</a>
+    <a [routerLink]="['/products']">Product</a>
+</nav>
+
+<router-outlet></router-outlet>
+<!-- Router view go here -->

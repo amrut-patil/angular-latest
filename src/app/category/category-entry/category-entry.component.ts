@@ -50,27 +50,27 @@ export class CategoryEntryComponent implements OnInit {
   }
 
   onSave() {
-    for (let index = 1; index < 51; index++) {
-      let acateg = new Category();
-      acateg.name = " Test " + index;
-      this.categoryService.save(acateg).then(((category) => {
-        this.category = category;
-      })).catch(((error) => {
-        console.log(error);
-      }));
-    }
+    // for (let index = 1; index < 51; index++) {
+    //   let acateg = new Category();
+    //   acateg.name = " Test " + index;
+    //   this.categoryService.save(acateg).then(((category) => {
+    //     this.category = category;
+    //   })).catch(((error) => {
+    //     console.log(error);
+    //   }));
+    // }
 
-    // this.category.name = this.categoryForm.value['name'];
-    // this.category.parent = this.categoryForm.value['parent']
-    // this.categoryService.save(this.category).then(((category) => {
-    //   this.category = category;
-    // })).catch(((error) => {
-    //   console.log(error);
-    // }));
+    this.category.name = this.categoryForm.value['name'];
+    this.category.parent = this.categoryForm.value['parent']
+    this.categoryService.save(this.category).then(((category) => {
+      this.category = category;
+    })).catch(((error) => {
+      console.log(error);
+    }));
 
-    // setTimeout(() => {
-    //   this.populateParents();
-    // }, 100);
+    setTimeout(() => {
+      this.populateParents();
+    }, 100);
   }
 
   private populateParents() {

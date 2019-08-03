@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
-    <span>Category</span>
+    <span>Product</span>
 </mat-toolbar>
-<form [formGroup]="categoryForm" (ngSubmit)="onSave()">
+<form [formGroup]="productForm" (ngSubmit)="onSave()">
     <div class="fields-container">
         <mat-form-field floatLabel="always">
             <mat-label>Name</mat-label>
@@ -9,8 +9,8 @@
         </mat-form-field>
 
         <mat-form-field floatLabel="always">
-            <mat-label>Parent</mat-label>
-            <input type="text" matInput formControlName="parent" [matAutocomplete]="auto">
+            <mat-label>Categories</mat-label>
+            <input type="text" matInput formControlName="categories" [matAutocomplete]="auto">
         </mat-form-field>
         <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngIf="isLoading" class="is-loading">
@@ -23,8 +23,8 @@
 
     </div>
     <div style="display: flex">
-        <button type="button" class="new-button" (click)="newCategory()" mat-raised-button>New</button>
-        <button type="submit" class="save-button" color="primary" [disabled]="categoryForm.invalid"
+        <button type="button" class="new-button" (click)="newProduct()" mat-raised-button>New</button>
+        <button type="submit" class="save-button" color="primary" [disabled]="productForm.invalid"
             mat-raised-button>Save</button>
     </div>
 </form>
