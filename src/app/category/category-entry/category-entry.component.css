@@ -1,25 +1,12 @@
-
 :host { 
     width: 100%;
-    align-self: flex-start;
 }
 
 form {
-    margin: 10px;
-    border: 1px solid rgb(197, 197, 197);
-}
-
-.new-button {
-    margin: 0px 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .save-button {
-    margin: 0px 10px 10px 10px;
     margin-left: auto;    
-}
-
-.fields-container {
-    display: flex;
-    flex-direction: column;
-    margin: 10px 10px 10px 10px;
 }

@@ -43,6 +43,7 @@ export class ProductEntryComponent implements OnInit {
 
   newProduct() {
     this.productForm.reset();
+    this.product = new Product();
   }
 
   onSave() {

@@ -1,8 +1,8 @@
-<mat-toolbar color="primary">
-    <span>Product</span>
-</mat-toolbar>
-<form [formGroup]="productForm" (ngSubmit)="onSave()">
-    <div class="fields-container">
+<mat-card>
+    <mat-card-title>
+        Product
+    </mat-card-title>
+    <form [formGroup]="productForm" (ngSubmit)="onSave()">
         <mat-form-field floatLabel="always">
             <mat-label>Name</mat-label>
             <input formControlName="name" matInput required>
@@ -21,10 +21,10 @@
             </mat-option>
         </mat-autocomplete>
 
-    </div>
-    <div style="display: flex">
-        <button type="button" class="new-button" (click)="newProduct()" mat-raised-button>New</button>
-        <button type="submit" class="save-button" color="primary" [disabled]="productForm.invalid"
-            mat-raised-button>Save</button>
-    </div>
-</form>
+        <div style="display: flex">
+            <button type="button" class="new-button" (click)="newProduct()" mat-raised-button>New</button>
+            <button type="submit" class="save-button" color="primary" [disabled]="productForm.invalid"
+                mat-raised-button>Save</button>
+        </div>
+    </form>
+</mat-card>

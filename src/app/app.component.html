@@ -1,7 +1,8 @@
-<nav>
-    <a [routerLink]="['/categories']" routerLinkActive="router-link-active" >Category</a>
-    <a [routerLink]="['/products']">Product</a>
-</nav>
+<mat-toolbar color="primary">
+    <div>
+        <button mat-button routerLink="/categories">Category</button>
+        <button mat-button routerLink="/products">Product</button>
+    </div>
+</mat-toolbar>
 
 <router-outlet></router-outlet>
-<!-- Router view go here -->

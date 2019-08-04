@@ -32,4 +32,8 @@ export class ProductService {
     return promise;
   }
 
+  public getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.url + "/products", { headers: this.headers });
+  }
+
 }

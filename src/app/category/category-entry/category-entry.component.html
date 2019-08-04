@@ -1,8 +1,8 @@
-<mat-toolbar color="primary">
-    <span>Category</span>
-</mat-toolbar>
-<form [formGroup]="categoryForm" (ngSubmit)="onSave()">
-    <div class="fields-container">
+<mat-card>
+    <mat-card-title>
+        Category
+    </mat-card-title>
+    <form [formGroup]="categoryForm" (ngSubmit)="onSave()">
         <mat-form-field floatLabel="always">
             <mat-label>Name</mat-label>
             <input formControlName="name" matInput required>
@@ -21,10 +21,10 @@
             </mat-option>
         </mat-autocomplete>
 
-    </div>
-    <div style="display: flex">
-        <button type="button" class="new-button" (click)="newCategory()" mat-raised-button>New</button>
-        <button type="submit" class="save-button" color="primary" [disabled]="categoryForm.invalid"
-            mat-raised-button>Save</button>
-    </div>
-</form>
+        <div style="display: flex">
+            <button type="button" class="new-button" (click)="newCategory()" mat-raised-button>New</button>
+            <button type="submit" class="save-button" color="primary" [disabled]="categoryForm.invalid"
+                mat-raised-button>Save</button>
+        </div>
+    </form>
+</mat-card>
