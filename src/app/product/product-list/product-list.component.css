@@ -3,6 +3,10 @@
   align-self: flex-start;
 }
 
+table {
+  width: 100%;
+}
+
 .refresh-button {
   margin: 10px;
 }

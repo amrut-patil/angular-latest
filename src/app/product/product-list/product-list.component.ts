@@ -27,5 +27,9 @@ export class ProductListComponent implements OnInit {
     })
   }
 
+  getRecord(selectedRecord) {
+    this.productService.getProductMessage(selectedRecord.name);
+  }
+
 
 }

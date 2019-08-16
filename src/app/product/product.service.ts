@@ -10,6 +10,8 @@ export class ProductService {
 
   private url: string = "http://localhost:8080";
   private headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+  public getProductSource = new Subject<string>();
+
   constructor(private http: HttpClient) { }
 
   public save(product: Product): Promise<Product> {
@@ -32,8 +34,29 @@ export class ProductService {
     return promise;
   }
 
+  public getProduct(productName: string): Promise<Product> {
+    let promise = new Promise<Product>((resolve, reject) => {
+      this.http.get<Product>(
+        this.url + "/product/" + productName,
+        { headers: this.headers }).subscribe(
+          (product) => {
+            resolve(product as Product);
+          },
+          (error: HttpErrorResponse) => {
+            console.error(error)
+            reject(error);
+          });
+    });
+
+    return promise;
+  }
+
   public getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.url + "/products", { headers: this.headers });
+  }
+
+  public getProductMessage(productName: string) {
+    this.getProductSource.next(productName);
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, SystemJsNgModuleLoader } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CategoryService } from '../category.service';
 import { Category } from '../category';
 import { debounceTime, switchMap, tap, finalize } from 'rxjs/operators';
@@ -13,7 +13,7 @@ export class CategoryEntryComponent implements OnInit {
 
   private category: Category;
   public categoryForm = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', Validators.required),
     parent: new FormControl('')
   });
   public filteredCategories;

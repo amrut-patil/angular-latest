@@ -31,4 +31,6 @@ export class CategoryListComponent implements OnInit {
   getRecord(selectedRecord) {
     this.categoryService.getCategoryMessage(selectedRecord.name);
   }
+
+  
 }
