@@ -34,6 +34,23 @@ export class ProductService {
     return promise;
   }
 
+  public delete(id: string): Promise<Product> {
+    let promise = new Promise<Product>((resolve, reject) => {
+      this.http.delete(
+        ApplicationConstants.URL + "/product/" + id,
+        { headers: this.headers }).subscribe(
+          () => {
+            resolve();
+          },
+          (error: HttpErrorResponse) => {
+            console.error(error)
+            reject(error);
+          });
+    });
+
+    return promise;
+  }
+
   public getProduct(productName: string): Promise<Product> {
     let promise = new Promise<Product>((resolve, reject) => {
       this.http.get<Product>(

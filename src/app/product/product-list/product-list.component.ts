@@ -16,6 +16,7 @@ export class ProductListComponent implements OnInit {
 
   public displayedColumns: string[] = ['name', 'categories'];
   public dataSource: Product[] = [];
+  private selectedRowIndex: string = '';
 
   constructor(private productService: ProductService, private realTimeService: RealTimeService) { }
 
@@ -35,6 +36,12 @@ export class ProductListComponent implements OnInit {
       var foundIndex = this.dataSource.findIndex(x => x._id == record.product._id);
       if (foundIndex > -1)
         this.dataSource[foundIndex] = record.product;
+    } else if (record.operation === ApplicationConstants.DELETE) {
+      var foundIndex = this.dataSource.findIndex(x => x._id == record.product._id);
+      if (foundIndex > -1){
+        this.selectedRowIndex = '';
+        this.dataSource.splice(foundIndex, 1);
+      }
     }
     this.table.renderRows();
   }
@@ -47,6 +54,7 @@ export class ProductListComponent implements OnInit {
   }
 
   getRecord(selectedRecord) {
+    this.selectedRowIndex = selectedRecord._id;
     this.productService.getProductMessage(selectedRecord.name);
   }
 

@@ -16,6 +16,7 @@ export class CategoryListComponent implements OnInit {
 
   public displayedColumns: string[] = ['name', 'parent', 'path'];
   public dataSource: Category[] = [];
+  private selectedRowIndex: string = '';
 
   constructor(private categoryService: CategoryService, private realTimeService: RealTimeService) { }
 
@@ -42,11 +43,18 @@ export class CategoryListComponent implements OnInit {
       var foundIndex = this.dataSource.findIndex(x => x._id == record.category._id);
       if (foundIndex > -1)
         this.dataSource[foundIndex] = record.category;
+    } else if (record.operation === ApplicationConstants.DELETE) {
+      var foundIndex = this.dataSource.findIndex(x => x._id == record.category._id);
+      if (foundIndex > -1){
+        this.selectedRowIndex = '';
+        this.dataSource.splice(foundIndex, 1);
+      }
     }
     this.table.renderRows();
   }
 
   getRecord(selectedRecord) {
+    this.selectedRowIndex = selectedRecord._id;
     this.categoryService.getCategoryMessage(selectedRecord.name);
   }
 

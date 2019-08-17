@@ -8,7 +8,7 @@ import { ApplicationConstants } from '../appConstants';
   providedIn: 'root'
 })
 export class CategoryService {
-  
+
   private headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
   public getCategorySource = new Subject<string>();
 
@@ -24,6 +24,23 @@ export class CategoryService {
           (category) => {
             //console.log(category);
             resolve(category as Category);
+          },
+          (error: HttpErrorResponse) => {
+            console.error(error)
+            reject(error);
+          });
+    });
+
+    return promise;
+  }
+
+  public delete(id: string): Promise<Category> {
+    let promise = new Promise<Category>((resolve, reject) => {
+      this.http.delete(
+        ApplicationConstants.URL + "/category/" + id,
+        { headers: this.headers }).subscribe(
+          () => {
+            resolve();
           },
           (error: HttpErrorResponse) => {
             console.error(error)

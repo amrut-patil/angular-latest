@@ -22,8 +22,11 @@
         </mat-autocomplete>
 
         <div>
-            <button type="button" (click)="addAttribute()">Add</button>
-        </div>        
+            <label style="color:  rgba(0,0,0,.54); font-size: 13px;">
+                <mat-label> Attributes </mat-label>
+            </label>
+            <button mat-raised-button type="button" style="margin: 10px" (click)="addAttribute()">+</button>
+        </div>
         <table class="mat-form-field-wrapper" mat-table [dataSource]="attributesDataSource" formArrayName="attributes">
             <!-- Row definitions -->
             <tr mat-header-row *matHeaderRowDef="attributesDisplayColumns"></tr>
@@ -43,10 +46,12 @@
             </ng-container>
         </table>
 
-        <div style="display: flex">
-            <button type="button" class="new-button" (click)="newProduct()" mat-raised-button>New</button>
-            <button type="submit" class="save-button" color="primary" [disabled]="productForm.invalid"
+        <div class="action-buttons-container">
+            <button type="submit" class="action-button" color="primary" [disabled]="productForm.invalid"
                 mat-raised-button>Save</button>
+            <button type="button" class="action-button" (click)="newProduct()" mat-raised-button>New</button>
+            <button type="button" class="action-button" [disabled]="!product._id" (click)="deleteProduct()"
+                mat-raised-button>Delete</button>
         </div>
     </form>
 </mat-card>

@@ -80,7 +80,14 @@ export class ProductEntryComponent implements OnInit {
 
   newProduct() {
     this.productForm.reset();
+    let attributesControl = this.productForm.get('attributes') as FormArray;
+    attributesControl.clear();   
+    this.updateView(); 
     this.product = new Product();
+  }
+
+  deleteProduct() {
+    this.productService.delete(this.product._id).then(() => this.newProduct())
   }
 
   onSave() {

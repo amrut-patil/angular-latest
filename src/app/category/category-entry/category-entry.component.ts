@@ -54,7 +54,10 @@ export class CategoryEntryComponent implements OnInit {
     })).catch(((error) => {
       console.log(error);
     }));
+  }
 
+  deleteCategory() {
+    this.categoryService.delete(this.category._id).then(() => this.newCategory())
   }
 
   private getSavedCategory() {

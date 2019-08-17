@@ -10,3 +10,20 @@ table {
 .refresh-button {
   margin: 10px;
 }
+
+.grid-highlight{
+  background: #cce6ff
+}
+
+mat-cell,
+.mat-cell,
+mat-footer-cell,
+.mat-footer-cell,
+mat-header-cell .mat-header-cell {
+padding-right: 24px;
+}
+
+th.mat-header-cell {
+  font-size: medium;
+  font-weight: bold;
+}

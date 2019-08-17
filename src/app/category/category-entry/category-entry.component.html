@@ -21,10 +21,13 @@
             </mat-option>
         </mat-autocomplete>
 
-        <div style="display: flex">
-            <button type="button" class="new-button" (click)="newCategory()" mat-raised-button>New</button>
-            <button type="submit" class="save-button" color="primary" [disabled]="categoryForm.invalid"
+        <div class="action-buttons-container">
+            <button type="submit" class="action-button" color="primary" [disabled]="categoryForm.invalid"
                 mat-raised-button>Save</button>
+            <button type="button" class="action-button" (click)="newCategory()" mat-raised-button>New</button>
+            <button type="button" class="action-button" [disabled]="!category._id" (click)="deleteCategory()"
+                mat-raised-button>Delete</button>
         </div>
+
     </form>
 </mat-card>
