@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, of } from 'rxjs';
 import { Product } from './product';
+import { ApplicationConstants } from '../appConstants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  private url: string = "http://localhost:8080";
   private headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
   public getProductSource = new Subject<string>();
 
@@ -18,11 +18,11 @@ export class ProductService {
 
     let promise = new Promise<Product>((resolve, reject) => {
       this.http.post(
-        this.url + "/product",
+        ApplicationConstants.URL + "/product",
         JSON.stringify(product),
         { headers: this.headers }).subscribe(
           (product) => {
-            console.log(product);
+            //console.log(product);
             resolve(product as Product);
           },
           (error: HttpErrorResponse) => {
@@ -37,7 +37,7 @@ export class ProductService {
   public getProduct(productName: string): Promise<Product> {
     let promise = new Promise<Product>((resolve, reject) => {
       this.http.get<Product>(
-        this.url + "/product/" + productName,
+        ApplicationConstants.URL + "/product/" + productName,
         { headers: this.headers }).subscribe(
           (product) => {
             resolve(product as Product);
@@ -52,7 +52,7 @@ export class ProductService {
   }
 
   public getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.url + "/products", { headers: this.headers });
+    return this.http.get<Product[]>(ApplicationConstants.URL + "/products", { headers: this.headers });
   }
 
   public getProductMessage(productName: string) {

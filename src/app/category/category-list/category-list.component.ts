@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Category } from '../category';
 import { CategoryService } from '../category.service';
 import { MatTable } from '@angular/material';
+import { RealTimeService } from 'src/app/shared/real-time.service';
+import { ApplicationConstants } from 'src/app/appConstants';
 
 @Component({
   selector: 'app-category-list',
@@ -15,7 +17,7 @@ export class CategoryListComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'parent', 'path'];
   public dataSource: Category[] = [];
 
-  constructor(private categoryService: CategoryService) { }
+  constructor(private categoryService: CategoryService, private realTimeService: RealTimeService) { }
 
   public refreshCategories() {
     this.categoryService.getCategories().subscribe((categories: Category[]) => {
@@ -26,11 +28,26 @@ export class CategoryListComponent implements OnInit {
 
   ngOnInit() {
     this.refreshCategories();
+
+    this.realTimeService.observeCatgories()
+      .subscribe(record => {
+        this.updateList(record)
+      });
+  }
+
+  updateList(record) {
+    if (record.operation === ApplicationConstants.INSERT) {
+      this.dataSource.push(record.category);
+    } else if (record.operation === ApplicationConstants.UPDATE) {
+      var foundIndex = this.dataSource.findIndex(x => x._id == record.category._id);
+      if (foundIndex > -1)
+        this.dataSource[foundIndex] = record.category;
+    }
+    this.table.renderRows();
   }
 
   getRecord(selectedRecord) {
     this.categoryService.getCategoryMessage(selectedRecord.name);
   }
 
-  
 }

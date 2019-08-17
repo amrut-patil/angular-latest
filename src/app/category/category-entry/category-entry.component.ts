@@ -19,8 +19,6 @@ export class CategoryEntryComponent implements OnInit {
   public filteredCategories;
   isLoading = false;
 
-  public parents: string[] = [];
-
   constructor(private categoryService: CategoryService) {
     this.category = new Category();
 
@@ -41,7 +39,6 @@ export class CategoryEntryComponent implements OnInit {
 
   ngOnInit() {
     this.getSavedCategory();
-    this.populateParents();
   }
 
   newCategory() {
@@ -58,18 +55,6 @@ export class CategoryEntryComponent implements OnInit {
       console.log(error);
     }));
 
-    setTimeout(() => {
-      this.populateParents();
-    }, 100);
-  }
-
-  private populateParents() {
-    this.categoryService.getCategories().subscribe((data: Category[]) => {
-      this.parents = [];
-      data.forEach((category: Category) => {
-        this.parents.push(category.name);
-      })
-    })
   }
 
   private getSavedCategory() {

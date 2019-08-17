@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Category } from './Category';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, of } from 'rxjs';
+import { ApplicationConstants } from '../appConstants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-
-  private url: string = "http://localhost:8080";
+  
   private headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
   public getCategorySource = new Subject<string>();
 
@@ -18,11 +18,11 @@ export class CategoryService {
 
     let promise = new Promise<Category>((resolve, reject) => {
       this.http.post(
-        this.url + "/category",
+        ApplicationConstants.URL + "/category",
         JSON.stringify(category),
         { headers: this.headers }).subscribe(
           (category) => {
-            console.log(category);
+            //console.log(category);
             resolve(category as Category);
           },
           (error: HttpErrorResponse) => {
@@ -37,7 +37,7 @@ export class CategoryService {
   public getCategory(categoryName: string): Promise<Category> {
     let promise = new Promise<Category>((resolve, reject) => {
       this.http.get<Category>(
-        this.url + "/category/" + categoryName,
+        ApplicationConstants.URL + "/category/" + categoryName,
         { headers: this.headers }).subscribe(
           (category) => {
             resolve(category as Category);
@@ -52,7 +52,7 @@ export class CategoryService {
   }
 
   public getCategories(filter?): Observable<Category[]> {
-    return this.http.get<Category[]>(this.url + "/categories/" + (filter && filter.name ? filter.name : ''), { headers: this.headers });
+    return this.http.get<Category[]>(ApplicationConstants.URL + "/categories/" + (filter && filter.name ? filter.name : ''), { headers: this.headers });
   }
 
   public getCategoryMessage(categoryName: string) {
