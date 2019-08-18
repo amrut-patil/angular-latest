@@ -101,11 +101,11 @@ export class ProductEntryComponent implements OnInit {
       }
     });
 
-    this.productService.save(this.product).then(((product) => {
+    this.productService.save(this.product).then((product) => {
       this.product = product;
-    })).catch(((error) => {
+    }).catch((error) => {
       console.log(error);
-    }));
+    });
 
   }
 
