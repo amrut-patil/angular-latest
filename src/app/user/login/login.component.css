@@ -1,0 +1,17 @@
+.login-form{
+    min-width: 150px;
+    max-width: 300px;
+    width: 100%;
+}
+
+.max-width {
+  width: 300px;
+}
+    
+.full-width {
+  width: 100%;
+}
+  
+.content-to-center {
+  margin: 0 auto;
+}

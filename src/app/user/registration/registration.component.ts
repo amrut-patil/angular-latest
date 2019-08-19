@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { UserService } from '../user.service';
 import { User } from '../user';
+import { RegistrationService } from '../registration.service';
 
 @Component({
   selector: 'app-registration',
@@ -13,7 +13,7 @@ export class RegistrationComponent implements OnInit {
   public user: User;
   public registrationForm = this.formBuilder.group({});
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder) {
+  constructor(private registrationService: RegistrationService, private formBuilder: FormBuilder) {
     this.user = new User();
   }
 
@@ -22,7 +22,8 @@ export class RegistrationComponent implements OnInit {
       firstname: new FormControl('', Validators.required),
       lastname: new FormControl('', Validators.required),
       email: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
+      password: new FormControl('', Validators.required),
+      confirmpassword: new FormControl('', Validators.required)
     });
   }
 
@@ -31,8 +32,9 @@ export class RegistrationComponent implements OnInit {
     this.user.lastname = this.registrationForm.value['lastname'];
     this.user.email = this.registrationForm.value['email'];
     this.user.password = this.registrationForm.value['password'];
+    this.user.confirmpassword = this.registrationForm.value['confirmpassword'];
 
-    this.userService.save(this.user).then((user) => {
+    this.registrationService.register(this.user).then((user) => {
       this.user = user;
     }).catch((error) => {
       console.log(error);

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Category } from './Category';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, of } from 'rxjs';
 import { ApplicationConstants } from '../appConstants';
 
@@ -9,7 +9,6 @@ import { ApplicationConstants } from '../appConstants';
 })
 export class CategoryService {
 
-  private headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
   public getCategorySource = new Subject<string>();
 
   constructor(private http: HttpClient) { }
@@ -19,10 +18,8 @@ export class CategoryService {
     let promise = new Promise<Category>((resolve, reject) => {
       this.http.post(
         ApplicationConstants.URL + "/category",
-        JSON.stringify(category),
-        { headers: this.headers }).subscribe(
+        JSON.stringify(category)).subscribe(
           (category) => {
-            //console.log(category);
             resolve(category as Category);
           },
           (error: HttpErrorResponse) => {
@@ -38,14 +35,14 @@ export class CategoryService {
     let promise = new Promise<Category>((resolve, reject) => {
       this.http.delete(
         ApplicationConstants.URL + "/category/" + id,
-        { headers: this.headers }).subscribe(
-          () => {
-            resolve();
-          },
-          (error: HttpErrorResponse) => {
-            console.error(error)
-            reject(error);
-          });
+      ).subscribe(
+        () => {
+          resolve();
+        },
+        (error: HttpErrorResponse) => {
+          console.error(error)
+          reject(error);
+        });
     });
 
     return promise;
@@ -55,21 +52,21 @@ export class CategoryService {
     let promise = new Promise<Category>((resolve, reject) => {
       this.http.get<Category>(
         ApplicationConstants.URL + "/category/" + categoryName,
-        { headers: this.headers }).subscribe(
-          (category) => {
-            resolve(category as Category);
-          },
-          (error: HttpErrorResponse) => {
-            console.error(error)
-            reject(error);
-          });
+      ).subscribe(
+        (category) => {
+          resolve(category as Category);
+        },
+        (error: HttpErrorResponse) => {
+          console.error(error)
+          reject(error);
+        });
     });
 
     return promise;
   }
 
   public getCategories(filter?): Observable<Category[]> {
-    return this.http.get<Category[]>(ApplicationConstants.URL + "/categories/" + (filter && filter.name ? filter.name : ''), { headers: this.headers });
+    return this.http.get<Category[]>(ApplicationConstants.URL + "/categories/" + (filter && filter.name ? filter.name : ''));
   }
 
   public getCategoryMessage(categoryName: string) {

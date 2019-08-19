@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, of } from 'rxjs';
 import { Product } from './product';
 import { ApplicationConstants } from '../appConstants';
@@ -9,7 +9,6 @@ import { ApplicationConstants } from '../appConstants';
 })
 export class ProductService {
 
-  private headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
   public getProductSource = new Subject<string>();
 
   constructor(private http: HttpClient) { }
@@ -19,10 +18,9 @@ export class ProductService {
     let promise = new Promise<Product>((resolve, reject) => {
       this.http.post(
         ApplicationConstants.URL + "/product",
-        JSON.stringify(product),
-        { headers: this.headers }).subscribe(
+        JSON.stringify(product)
+        ).subscribe(
           (product) => {
-            //console.log(product);
             resolve(product as Product);
           },
           (error: HttpErrorResponse) => {
@@ -38,7 +36,7 @@ export class ProductService {
     let promise = new Promise<Product>((resolve, reject) => {
       this.http.delete(
         ApplicationConstants.URL + "/product/" + id,
-        { headers: this.headers }).subscribe(
+        ).subscribe(
           () => {
             resolve();
           },
@@ -55,7 +53,7 @@ export class ProductService {
     let promise = new Promise<Product>((resolve, reject) => {
       this.http.get<Product>(
         ApplicationConstants.URL + "/product/" + productName,
-        { headers: this.headers }).subscribe(
+        ).subscribe(
           (product) => {
             resolve(product as Product);
           },
@@ -69,7 +67,7 @@ export class ProductService {
   }
 
   public getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(ApplicationConstants.URL + "/products", { headers: this.headers });
+    return this.http.get<Product[]>(ApplicationConstants.URL + "/products");
   }
 
   public getProductMessage(productName: string) {

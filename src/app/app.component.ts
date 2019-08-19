@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RealTimeService } from './shared/real-time.service';
+import { AuthenticationService } from './user/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,11 @@ import { RealTimeService } from './shared/real-time.service';
 })
 export class AppComponent {
 
-  constructor() { }
+  constructor(private authenticationService: AuthenticationService ) { }
 
+  logout(){
+    this.authenticationService.logout();
+    //alert("logout user");
+  }
 
 }
