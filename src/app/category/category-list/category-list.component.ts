@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Category } from '../category';
 import { CategoryService } from '../category.service';
 import { MatTable } from '@angular/material';
 import { RealTimeService } from 'src/app/shared/real-time.service';
 import { ApplicationConstants } from 'src/app/appConstants';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-category-list',
@@ -21,10 +23,11 @@ export class CategoryListComponent implements OnInit {
   constructor(private categoryService: CategoryService, private realTimeService: RealTimeService) { }
 
   public refreshCategories() {
-    this.categoryService.getCategories().subscribe((categories: Category[]) => {
-      this.dataSource = categories;
-      this.table.renderRows();
-    })
+    this.categoryService.getCategories()
+      .subscribe((categories: Category[]) => {
+        this.dataSource = categories;
+        this.table.renderRows();
+      })
   }
 
   ngOnInit() {
@@ -45,7 +48,7 @@ export class CategoryListComponent implements OnInit {
         this.dataSource[foundIndex] = record.category;
     } else if (record.operation === ApplicationConstants.DELETE) {
       var foundIndex = this.dataSource.findIndex(x => x._id == record.category._id);
-      if (foundIndex > -1){
+      if (foundIndex > -1) {
         this.selectedRowIndex = '';
         this.dataSource.splice(foundIndex, 1);
       }

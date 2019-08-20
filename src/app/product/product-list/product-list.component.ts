@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from '../product.service';
 import { Product } from '../product';
-import { MatTable } from '@angular/material';
+import { MatTable, MatSort } from '@angular/material';
 import { RealTimeService } from 'src/app/shared/real-time.service';
 import { ApplicationConstants } from 'src/app/appConstants';
 
@@ -13,14 +13,17 @@ import { ApplicationConstants } from 'src/app/appConstants';
 export class ProductListComponent implements OnInit {
 
   @ViewChild(MatTable, { static: false }) table: MatTable<any>;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   public displayedColumns: string[] = ['name', 'categories'];
-  public dataSource: Product[] = [];
+  //public dataSource: Product[] = [];
+  public dataSource: any = [];
   private selectedRowIndex: string = '';
 
   constructor(private productService: ProductService, private realTimeService: RealTimeService) { }
 
   ngOnInit() {
+    this.dataSource.sort = this.sort;
     this.refreshProducts();
 
     this.realTimeService.observeProducts()
@@ -38,7 +41,7 @@ export class ProductListComponent implements OnInit {
         this.dataSource[foundIndex] = record.product;
     } else if (record.operation === ApplicationConstants.DELETE) {
       var foundIndex = this.dataSource.findIndex(x => x._id == record.product._id);
-      if (foundIndex > -1){
+      if (foundIndex > -1) {
         this.selectedRowIndex = '';
         this.dataSource.splice(foundIndex, 1);
       }
@@ -58,4 +61,8 @@ export class ProductListComponent implements OnInit {
     this.productService.getProductMessage(selectedRecord.name);
   }
 
+  doSort() {
+    console.log("sorting called");
+    this.table.renderRows();
+  }
 }

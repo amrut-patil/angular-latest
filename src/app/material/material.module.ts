@@ -8,7 +8,10 @@ import {
   MatAutocompleteModule,
   MatGridListModule,
   MatTableModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatMenuModule,
+  MatIconModule,
+  MatSortModule
 } from '@angular/material';
 
 const MaterialComponents = [
@@ -19,7 +22,10 @@ const MaterialComponents = [
   MatButtonModule,
   MatGridListModule,
   MatTableModule,
+  MatSortModule,
   MatAutocompleteModule,
+  MatMenuModule,
+  MatIconModule,
   MatProgressSpinnerModule
 ]
 

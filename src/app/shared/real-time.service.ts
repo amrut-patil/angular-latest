@@ -15,36 +15,48 @@ export class RealTimeService {
 
   socket: Socket;
   productObserver: Observer<any>;
+  productObservable: Observable<any>;
   categoryObserver: Observer<any>;
+  categoryObservable: Observable<any>;
 
   constructor() {
     this.socket = socketIo(ApplicationConstants.URL);
   }
 
   createCategoryObservable(): Observable<any> {
-    return new Observable(observer => {
+    this.categoryObservable = new Observable(observer => {
       this.categoryObserver = observer;
     });
+    return this.categoryObservable
   }
 
   observeCatgories(): Observable<any> {
-    this.socket.on('category', (res) => {
-      this.categoryObserver.next(res.data);
-    });
-    return this.createCategoryObservable();
+    if (this.categoryObservable) {
+      return this.categoryObservable;
+    } else {
+      this.socket.on('category', (res) => {
+        this.categoryObserver.next(res.data);
+      });
+      return this.createCategoryObservable();
+    }
   }
 
   createProductObservable(): Observable<any> {
-    return new Observable(observer => {
+    this.productObservable = new Observable(observer => {
       this.productObserver = observer;
     });
+    return this.productObservable;
   }
 
   observeProducts(): Observable<any> {
-    this.socket.on('product', (res) => {
-      this.productObserver.next(res.data);
-    });
-    return this.createProductObservable();
+    if (this.productObservable) {
+      return this.productObservable;
+    } else {
+      this.socket.on('product', (res) => {
+        this.productObserver.next(res.data);
+      });
+      return this.createProductObservable();
+    }
   }
 
   private handleError(error) {

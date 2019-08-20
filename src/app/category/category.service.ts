@@ -14,7 +14,7 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   public save(category: Category): Promise<Category> {
-
+    
     let promise = new Promise<Category>((resolve, reject) => {
       this.http.post(
         ApplicationConstants.URL + "/category",

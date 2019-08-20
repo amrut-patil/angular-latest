@@ -12,8 +12,7 @@ export class AppComponent {
   constructor(private authenticationService: AuthenticationService ) { }
 
   logout(){
-    this.authenticationService.logout();
-    //alert("logout user");
+    this.authenticationService.logout();    
   }
 
 }

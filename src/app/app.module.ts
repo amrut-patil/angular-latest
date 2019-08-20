@@ -15,6 +15,9 @@ import { ProductListComponent } from './product/product-list/product-list.compon
 import { RegistrationComponent } from './user/registration/registration.component';
 import { LoginComponent } from './user/login/login.component';
 import { AuthInterceptor } from './user/authentication.intercepter';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HomeComponent } from './home/home.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ import { AuthInterceptor } from './user/authentication.intercepter';
     ProductComponent,
     ProductListComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    PageNotFoundComponent,
+    HomeComponent
   ],
   imports: [
     AppRoutingModule,

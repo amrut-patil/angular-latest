@@ -38,7 +38,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
     private clearSessionInformation(){
         localStorage.setItem('id_token', '');
-        localStorage.setItem("expires_at", '');
       }
 
     private getHeader(idToken: any) {

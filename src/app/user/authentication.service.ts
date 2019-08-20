@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ApplicationConstants } from '../appConstants';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   public login(user: any): Promise<any> {
 
@@ -17,6 +18,7 @@ export class AuthenticationService {
         JSON.stringify(user)).subscribe(
           (product) => {
             this.setSession(product);
+            this.router.navigate(['/home']);
             resolve(product);
           },
           (error: HttpErrorResponse) => {
@@ -34,8 +36,9 @@ export class AuthenticationService {
       this.http.post(
         ApplicationConstants.URL + "/logout",
         JSON.stringify({})).subscribe(
-          () => {
+          () => {            
             this.clearSessionInformation();
+            this.router.navigate(['/login']);
             resolve();
           },
           (error: HttpErrorResponse) => {
@@ -47,16 +50,15 @@ export class AuthenticationService {
     return promise;
   }
 
-  private clearSessionInformation(){
+  public isAuthenticated(): boolean {
+    return !!localStorage.getItem("id_token");
+  }
+
+  private clearSessionInformation() {
     localStorage.setItem('id_token', '');
-    localStorage.setItem("expires_at", '');
   }
 
   private setSession(authResult) {
-    //const expiresAt = moment().add(authResult.expiresIn,'second');
-    var t = new Date();
-    t.setSeconds(t.getSeconds() + 1000);
     localStorage.setItem('id_token', authResult.token);
-    localStorage.setItem("expires_at", JSON.stringify(t.valueOf()));
   }
 }
