@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpHeaders } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+
+    constructor(private router: Router) {}
 
     intercept(req: HttpRequest<any>,
         next: HttpHandler): Observable<HttpEvent<any>> {
@@ -14,7 +18,16 @@ export class AuthInterceptor implements HttpInterceptor {
                 headers: this.getHeader(idToken)
             });
 
-            return next.handle(cloned);
+            return next.handle(cloned).pipe( tap(() => {},
+            (err: any) => {
+            if (err instanceof HttpErrorResponse) {
+              if (err.status !== 401) {
+               return;
+              }
+              this.clearSessionInformation();
+              this.router.navigate(['login']);
+            }
+          }));
         }
         else {           
             const cloned = req.clone({headers: this.getHeaderOld(idToken)});
@@ -22,6 +35,11 @@ export class AuthInterceptor implements HttpInterceptor {
             //return next.handle(req);
         }
     }
+
+    private clearSessionInformation(){
+        localStorage.setItem('id_token', '');
+        localStorage.setItem("expires_at", '');
+      }
 
     private getHeader(idToken: any) {
         let headers = new HttpHeaders();
