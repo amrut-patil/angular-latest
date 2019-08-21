@@ -18,6 +18,7 @@ import { AuthInterceptor } from './user/authentication.intercepter';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomeComponent } from './home/home.component';
 import { CommonModule } from '@angular/common';
+import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CommonModule } from '@angular/common';
     RegistrationComponent,
     LoginComponent,
     PageNotFoundComponent,
-    HomeComponent
+    HomeComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -40,6 +42,9 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     ReactiveFormsModule,
     MaterialModule    
+  ],
+  entryComponents: [
+    ConfirmationDialogComponent
   ],
   providers: [ { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],
   bootstrap: [AppComponent]

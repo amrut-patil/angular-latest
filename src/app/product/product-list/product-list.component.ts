@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ProductService } from '../product.service';
 import { Product } from '../product';
-import { MatTable, MatSort } from '@angular/material';
+import { MatTable, MatSort, MatTableDataSource } from '@angular/material';
 import { RealTimeService } from 'src/app/shared/real-time.service';
 import { ApplicationConstants } from 'src/app/appConstants';
 
@@ -12,12 +12,9 @@ import { ApplicationConstants } from 'src/app/appConstants';
 })
 export class ProductListComponent implements OnInit {
 
-  @ViewChild(MatTable, { static: false }) table: MatTable<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-
   public displayedColumns: string[] = ['name', 'categories'];
-  //public dataSource: Product[] = [];
-  public dataSource: any = [];
+  public dataSource = new MatTableDataSource([]);
   private selectedRowIndex: string = '';
 
   constructor(private productService: ProductService, private realTimeService: RealTimeService) { }
@@ -32,28 +29,31 @@ export class ProductListComponent implements OnInit {
       });
   }
 
-  updateList(record) {
-    if (record.operation === ApplicationConstants.INSERT) {
-      this.dataSource.push(record.product);
-    } else if (record.operation === ApplicationConstants.UPDATE) {
-      var foundIndex = this.dataSource.findIndex(x => x._id == record.product._id);
-      if (foundIndex > -1)
-        this.dataSource[foundIndex] = record.product;
-    } else if (record.operation === ApplicationConstants.DELETE) {
-      var foundIndex = this.dataSource.findIndex(x => x._id == record.product._id);
-      if (foundIndex > -1) {
-        this.selectedRowIndex = '';
-        this.dataSource.splice(foundIndex, 1);
-      }
-    }
-    this.table.renderRows();
+  public refreshProducts() {
+
+    console.log("refreshProducts")
+    this.productService.getProducts().subscribe((products: Product[]) => {
+      this.dataSource.data = products;
+    })
   }
 
-  public refreshProducts() {
-    this.productService.getProducts().subscribe((products: Product[]) => {
-      this.dataSource = products;
-      this.table.renderRows();
-    })
+  updateList(record) {
+    if (record.operation === ApplicationConstants.INSERT) {
+      this.dataSource.data.push(record.product);
+    } else if (record.operation === ApplicationConstants.UPDATE) {
+      var foundIndex = this.dataSource.data.findIndex(x => x._id == record.product._id);
+
+      if (foundIndex > -1){
+        this.dataSource.data[foundIndex] = record.product;
+      }
+    } else if (record.operation === ApplicationConstants.DELETE) {
+      var foundIndex = this.dataSource.data.findIndex(x => x._id == record.product._id);
+      if (foundIndex > -1) {
+        this.selectedRowIndex = '';
+        this.dataSource.data.splice(foundIndex, 1);
+      }
+    }
+    this.dataSource.data = this.dataSource.data.slice();
   }
 
   getRecord(selectedRecord) {
@@ -61,8 +61,4 @@ export class ProductListComponent implements OnInit {
     this.productService.getProductMessage(selectedRecord.name);
   }
 
-  doSort() {
-    console.log("sorting called");
-    this.table.renderRows();
-  }
 }

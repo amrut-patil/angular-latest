@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Category } from '../category';
 import { CategoryService } from '../category.service';
-import { MatTable } from '@angular/material';
+import { MatTable, MatTableDataSource, MatSort } from '@angular/material';
 import { RealTimeService } from 'src/app/shared/real-time.service';
 import { ApplicationConstants } from 'src/app/appConstants';
 import { Subject } from 'rxjs';
@@ -14,23 +14,15 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class CategoryListComponent implements OnInit {
 
-  @ViewChild(MatTable, { static: false }) table: MatTable<any>;
-
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   public displayedColumns: string[] = ['name', 'parent', 'path'];
-  public dataSource: Category[] = [];
+  public dataSource = new MatTableDataSource([]);
   private selectedRowIndex: string = '';
 
   constructor(private categoryService: CategoryService, private realTimeService: RealTimeService) { }
 
-  public refreshCategories() {
-    this.categoryService.getCategories()
-      .subscribe((categories: Category[]) => {
-        this.dataSource = categories;
-        this.table.renderRows();
-      })
-  }
-
   ngOnInit() {
+    this.dataSource.sort = this.sort;
     this.refreshCategories();
 
     this.realTimeService.observeCatgories()
@@ -39,21 +31,28 @@ export class CategoryListComponent implements OnInit {
       });
   }
 
+  public refreshCategories() {
+    this.categoryService.getCategories()
+      .subscribe((categories: Category[]) => {
+        this.dataSource.data = categories;
+      })
+  }
+
   updateList(record) {
     if (record.operation === ApplicationConstants.INSERT) {
-      this.dataSource.push(record.category);
+      this.dataSource.data.push(record.category);
     } else if (record.operation === ApplicationConstants.UPDATE) {
-      var foundIndex = this.dataSource.findIndex(x => x._id == record.category._id);
+      var foundIndex = this.dataSource.data.findIndex(x => x._id == record.category._id);
       if (foundIndex > -1)
-        this.dataSource[foundIndex] = record.category;
+        this.dataSource.data[foundIndex] = record.category;
     } else if (record.operation === ApplicationConstants.DELETE) {
-      var foundIndex = this.dataSource.findIndex(x => x._id == record.category._id);
+      var foundIndex = this.dataSource.data.findIndex(x => x._id == record.category._id);
       if (foundIndex > -1) {
         this.selectedRowIndex = '';
-        this.dataSource.splice(foundIndex, 1);
+        this.dataSource.data.splice(foundIndex, 1);
       }
     }
-    this.table.renderRows();
+    this.dataSource.data = this.dataSource.data.slice();
   }
 
   getRecord(selectedRecord) {

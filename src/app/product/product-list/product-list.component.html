@@ -1,8 +1,14 @@
 <mat-toolbar>
-    <span>Products</span>
-    <button type="button" mat-raised-button class="refresh-button" (click)="refreshProducts()">Refresh</button>
+  <span>Products</span>
+
+  <div class="refresh-container">
+    <button mat-icon-button (click)="refreshProducts()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
 </mat-toolbar>
-<table mat-table matSort (matSortChange)="doSort()" [dataSource]="dataSource" class="mat-elevation-z8">
+<table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
@@ -15,7 +21,6 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
-  [ngClass]="{'grid-highlight': selectedRowIndex == row._id}"
-  (click)="getRecord(row)"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+    [ngClass]="{'grid-highlight': selectedRowIndex == row._id}" (click)="getRecord(row)"></tr>
 </table>

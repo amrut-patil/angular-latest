@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CategoryService } from '../category.service';
 import { Category } from '../category';
 import { debounceTime, switchMap, tap, finalize } from 'rxjs/operators';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-category-entry',
@@ -19,7 +21,7 @@ export class CategoryEntryComponent implements OnInit {
   public filteredCategories;
   isLoading = false;
 
-  constructor(private categoryService: CategoryService) {
+  constructor(public dialog: MatDialog, private categoryService: CategoryService) {
     this.category = new Category();
 
     let self = this;
@@ -57,7 +59,16 @@ export class CategoryEntryComponent implements OnInit {
   }
 
   deleteCategory() {
-    this.categoryService.delete(this.category._id).then(() => this.newCategory())
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: "Are you sure you want to delete this item?"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {        
+        this.categoryService.delete(this.category._id).then(() => this.newCategory())
+      }
+    });
+    
   }
 
   private getSavedCategory() {

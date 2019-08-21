@@ -5,7 +5,8 @@ import { debounceTime, switchMap, tap, finalize } from 'rxjs/operators';
 import { CategoryService } from 'src/app/category/category.service';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import { MatTable } from '@angular/material';
+import { MatTable, MatDialog } from '@angular/material';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-product-entry',
@@ -25,7 +26,10 @@ export class ProductEntryComponent implements OnInit {
   public filteredCategories;
   isLoading = false;
 
-  constructor(private productService: ProductService, private categoryService: CategoryService, private formBuilder: FormBuilder) {
+  constructor(public dialog: MatDialog,
+    private productService: ProductService, 
+    private categoryService: CategoryService, 
+    private formBuilder: FormBuilder) {
     this.product = new Product();
   }
 
@@ -87,7 +91,15 @@ export class ProductEntryComponent implements OnInit {
   }
 
   deleteProduct() {
-    this.productService.delete(this.product._id).then(() => this.newProduct())
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: "Are you sure you want to delete this item?"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {        
+        this.productService.delete(this.product._id).then(() => this.newProduct())
+      }
+    });
   }
 
   onSave() {

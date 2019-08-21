@@ -11,7 +11,8 @@ import {
   MatProgressSpinnerModule,
   MatMenuModule,
   MatIconModule,
-  MatSortModule
+  MatSortModule,
+  MatDialogModule
 } from '@angular/material';
 
 const MaterialComponents = [
@@ -26,6 +27,7 @@ const MaterialComponents = [
   MatAutocompleteModule,
   MatMenuModule,
   MatIconModule,
+  MatDialogModule,
   MatProgressSpinnerModule
 ]
 

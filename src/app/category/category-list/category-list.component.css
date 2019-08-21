@@ -27,3 +27,9 @@ th.mat-header-cell {
   font-size: medium;
   font-weight: bold;
 }
+
+.refresh-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
