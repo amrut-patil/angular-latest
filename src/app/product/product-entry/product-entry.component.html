@@ -1,26 +1,27 @@
 <mat-toolbar>
-        <span>Product</span>
+    <span>Product</span>
 </mat-toolbar>
 <mat-card>
-    <form [formGroup]="productForm" (ngSubmit)="onSave()">
+    <form [formGroup]="productForm" #productFormDirective="ngForm" (ngSubmit)="onSave()">
         <mat-form-field floatLabel="always">
             <mat-label>Name</mat-label>
             <input formControlName="name" matInput>
+            <mat-error>{{ ProductValidator.getNameErrorMessage(productForm) }}</mat-error>
         </mat-form-field>
 
         <mat-form-field floatLabel="always">
             <mat-label>Categories</mat-label>
             <input type="text" matInput formControlName="categories" [matAutocomplete]="auto">
+            <mat-error>{{ ProductValidator.getCategoryErrorMessage(productForm) }}</mat-error>
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngIf="isLoading" class="is-loading">
+                    <mat-spinner diameter="50"></mat-spinner>
+                </mat-option>
+                <mat-option *ngFor="let category of (filteredCategories | async)" [value]="category.name">
+                    <span>{{ category.name }}</span>
+                </mat-option>
+            </mat-autocomplete>
         </mat-form-field>
-        <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngIf="isLoading" class="is-loading">
-                <mat-spinner diameter="50"></mat-spinner>
-            </mat-option>
-            <mat-option *ngFor="let category of (filteredCategories | async)" [value]="category.name">
-                <span>{{ category.name }}</span>
-            </mat-option>
-        </mat-autocomplete>
-
         <div>
             <label style="color:  rgba(0,0,0,.54); font-size: 13px;">
                 <mat-label> Attributes </mat-label>

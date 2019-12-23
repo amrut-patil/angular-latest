@@ -2,10 +2,11 @@
         <span>Category</span>
 </mat-toolbar>
 <mat-card>
-    <form [formGroup]="categoryForm" (ngSubmit)="onSave()">
+    <form [formGroup]="categoryForm" #categoryFormDirective="ngForm" (ngSubmit)="onSave()">
         <mat-form-field floatLabel="always">
             <mat-label>Name</mat-label>
             <input formControlName="name" matInput>
+            <mat-error>{{ CategoryValidator.getNameErrorMessage(categoryForm) }}</mat-error>
         </mat-form-field>
 
         <mat-form-field floatLabel="always">

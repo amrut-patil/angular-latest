@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, FormArray, AbstractControl, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild} from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, FormArray, AbstractControl, Validators, NgForm } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, switchMap, tap, finalize } from 'rxjs/operators';
 import { CategoryService } from 'src/app/category/category.service';
@@ -7,6 +7,10 @@ import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { MatTable, MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import { ProductValidator } from './product-validator';
+import { ApplicationErrorHandler } from 'src/app/shared/errorHandler';
+import { NotificationDialogComponent } from 'src/app/shared/notification-dialog/notification-dialog.component';
+import { NotificationService } from 'src/app/shared/notification.service';
 
 @Component({
   selector: 'app-product-entry',
@@ -17,7 +21,8 @@ export class ProductEntryComponent implements OnInit {
 
   public product: Product;
   public productForm = this.formBuilder.group({});
-  @ViewChild(MatTable, { static: false }) table: MatTable<any>;
+  public ProductValidator = ProductValidator;
+  @ViewChild('productFormDirective', { static: false }) public productFormDirective: NgForm;
 
   attributesDisplayColumns = ['name', 'value'];
   attributesDataSource = new BehaviorSubject<AbstractControl[]>([]);
@@ -27,8 +32,9 @@ export class ProductEntryComponent implements OnInit {
   isLoading = false;
 
   constructor(public dialog: MatDialog,
-    private productService: ProductService, 
-    private categoryService: CategoryService, 
+    private productService: ProductService,
+    private categoryService: CategoryService,
+    private notificationService: NotificationService,
     private formBuilder: FormBuilder) {
     this.product = new Product();
   }
@@ -83,10 +89,11 @@ export class ProductEntryComponent implements OnInit {
   }
 
   newProduct() {
+    this.productFormDirective.resetForm();
     this.productForm.reset();
     let attributesControl = this.productForm.get('attributes') as FormArray;
-    attributesControl.clear();   
-    this.updateView(); 
+    attributesControl.clear();
+    this.updateView();
     this.product = new Product();
   }
 
@@ -96,14 +103,14 @@ export class ProductEntryComponent implements OnInit {
       data: "Are you sure you want to delete this item?"
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {        
+      if (result) {
         this.productService.delete(this.product._id).then(() => this.newProduct())
       }
     });
   }
 
   onSave() {
-    this.product.name = this.productForm.value['name'];
+    this.product.name =this.productForm.value['name'];
     this.product.categories = this.productForm.value['categories'];
 
     this.product.attributes = [];
@@ -116,7 +123,7 @@ export class ProductEntryComponent implements OnInit {
     this.productService.save(this.product).then((product) => {
       this.product = product;
     }).catch((error) => {
-      console.log(error);
+      ApplicationErrorHandler.addServerError(this.productForm, error, this.notificationService);
     });
 
   }

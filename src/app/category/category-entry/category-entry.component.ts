@@ -1,10 +1,13 @@
-import { Component, OnInit, SystemJsNgModuleLoader } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { CategoryService } from '../category.service';
 import { Category } from '../category';
 import { debounceTime, switchMap, tap, finalize } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+import { CategoryValidator } from './category-validator';
+import { NotificationService } from 'src/app/shared/notification.service';
+import { ApplicationErrorHandler } from 'src/app/shared/errorHandler';
 
 @Component({
   selector: 'app-category-entry',
@@ -14,6 +17,9 @@ import { MatDialog } from '@angular/material';
 export class CategoryEntryComponent implements OnInit {
 
   private category: Category;
+  public CategoryValidator = CategoryValidator;
+  @ViewChild('categoryFormDirective', { static: false }) public categoryFormDirective: NgForm;
+  
   public categoryForm = new FormGroup({
     name: new FormControl('', Validators.required),
     parent: new FormControl('')
@@ -21,7 +27,8 @@ export class CategoryEntryComponent implements OnInit {
   public filteredCategories;
   isLoading = false;
 
-  constructor(public dialog: MatDialog, private categoryService: CategoryService) {
+  constructor(public dialog: MatDialog, private categoryService: CategoryService,
+    private notificationService: NotificationService) {
     this.category = new Category();
 
     let self = this;
@@ -43,9 +50,10 @@ export class CategoryEntryComponent implements OnInit {
     this.getSavedCategory();
   }
 
-  newCategory() {
-    this.category = new Category();
+  newCategory() {    
+    this.categoryFormDirective.resetForm();
     this.categoryForm.reset();
+    this.category = new Category();    
   }
 
   onSave() {
@@ -54,7 +62,7 @@ export class CategoryEntryComponent implements OnInit {
     this.categoryService.save(this.category).then(((category) => {
       this.category = category;
     })).catch(((error) => {
-      console.log(error);
+      ApplicationErrorHandler.addServerError(this.categoryForm, error, this.notificationService);
     }));
   }
 
@@ -64,11 +72,11 @@ export class CategoryEntryComponent implements OnInit {
       data: "Are you sure you want to delete this item?"
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {        
+      if (result) {
         this.categoryService.delete(this.category._id).then(() => this.newCategory())
       }
     });
-    
+
   }
 
   private getSavedCategory() {

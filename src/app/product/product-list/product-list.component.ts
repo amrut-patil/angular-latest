@@ -30,8 +30,6 @@ export class ProductListComponent implements OnInit {
   }
 
   public refreshProducts() {
-
-    console.log("refreshProducts")
     this.productService.getProducts().subscribe((products: Product[]) => {
       this.dataSource.data = products;
     })

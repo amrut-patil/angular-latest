@@ -19,6 +19,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HomeComponent } from './home/home.component';
 import { CommonModule } from '@angular/common';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
+import { NotificationDialogComponent } from './shared/notification-dialog/notification-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
     LoginComponent,
     PageNotFoundComponent,
     HomeComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    NotificationDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -44,7 +46,8 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
     MaterialModule    
   ],
   entryComponents: [
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    NotificationDialogComponent
   ],
   providers: [ { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],
   bootstrap: [AppComponent]

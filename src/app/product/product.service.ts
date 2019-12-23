@@ -19,14 +19,13 @@ export class ProductService {
       this.http.post(
         ApplicationConstants.URL + "/product",
         JSON.stringify(product)
-        ).subscribe(
-          (product) => {
-            resolve(product as Product);
-          },
-          (error: HttpErrorResponse) => {
-            console.error(error)
-            reject(error);
-          });
+      ).subscribe(
+        (product) => {
+          resolve(product as Product);
+        },
+        (error: HttpErrorResponse) => {
+          reject(error.error);
+        });
     });
 
     return promise;
@@ -36,14 +35,14 @@ export class ProductService {
     let promise = new Promise<Product>((resolve, reject) => {
       this.http.delete(
         ApplicationConstants.URL + "/product/" + id,
-        ).subscribe(
-          () => {
-            resolve();
-          },
-          (error: HttpErrorResponse) => {
-            console.error(error)
-            reject(error);
-          });
+      ).subscribe(
+        () => {
+          resolve();
+        },
+        (error: HttpErrorResponse) => {
+          console.error(error)
+          reject(error);
+        });
     });
 
     return promise;
@@ -53,14 +52,14 @@ export class ProductService {
     let promise = new Promise<Product>((resolve, reject) => {
       this.http.get<Product>(
         ApplicationConstants.URL + "/product/" + productName,
-        ).subscribe(
-          (product) => {
-            resolve(product as Product);
-          },
-          (error: HttpErrorResponse) => {
-            console.error(error)
-            reject(error);
-          });
+      ).subscribe(
+        (product) => {
+          resolve(product as Product);
+        },
+        (error: HttpErrorResponse) => {
+          console.error(error)
+          reject(error);
+        });
     });
 
     return promise;

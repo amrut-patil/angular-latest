@@ -14,18 +14,18 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   public save(category: Category): Promise<Category> {
-    
+
     let promise = new Promise<Category>((resolve, reject) => {
       this.http.post(
         ApplicationConstants.URL + "/category",
-        JSON.stringify(category)).subscribe(
-          (category) => {
-            resolve(category as Category);
-          },
-          (error: HttpErrorResponse) => {
-            console.error(error)
-            reject(error);
-          });
+        JSON.stringify(category)
+      ).subscribe(
+        (category) => {
+          resolve(category as Category);
+        },
+        (error: HttpErrorResponse) => {
+          reject(error.error);
+        });
     });
 
     return promise;

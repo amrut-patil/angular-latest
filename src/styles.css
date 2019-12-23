@@ -2,3 +2,22 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.myapp-notification-success .mat-dialog-container {
+   background-color: #d4edda;
+}
+
+.myapp-notification-information .mat-dialog-container {
+   background-color: #d1ecf1;
+}
+
+.myapp-notification-warning .mat-dialog-container {
+   background-color: #fff3cd;;
+}
+
+.myapp-notification-error .mat-dialog-container {
+   background-color: #f8d7da;
+}
+
+  
+
