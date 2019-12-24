@@ -10,6 +10,7 @@ import { ApplicationConstants } from '../appConstants';
 export class ProductService {
 
   public getProductSource = new Subject<string>();
+  public clearRowSelectionSource = new Subject();
 
   constructor(private http: HttpClient) { }
 
@@ -70,6 +71,10 @@ export class ProductService {
 
   public getProductMessage(productName: string) {
     this.getProductSource.next(productName);
+  }
+
+  public clearRowSelection() {
+    this.clearRowSelectionSource.next();
   }
 
 }

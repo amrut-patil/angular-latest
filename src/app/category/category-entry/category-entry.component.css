@@ -15,3 +15,9 @@ form {
 .action-button {
     margin-left: 10px;
 }
+
+.add-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}

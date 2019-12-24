@@ -10,6 +10,7 @@ import { ApplicationConstants } from '../appConstants';
 export class CategoryService {
 
   public getCategorySource = new Subject<string>();
+  public clearRowSelectionSource = new Subject();
 
   constructor(private http: HttpClient) { }
 
@@ -72,4 +73,7 @@ export class CategoryService {
     this.getCategorySource.next(categoryName);
   }
 
+  public clearRowSelection() {
+    this.clearRowSelectionSource.next();
+  }
 }

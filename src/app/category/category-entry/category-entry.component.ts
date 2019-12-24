@@ -53,6 +53,7 @@ export class CategoryEntryComponent implements OnInit {
   newCategory() {    
     this.categoryFormDirective.resetForm();
     this.categoryForm.reset();
+    this.categoryService.clearRowSelection();
     this.category = new Category();    
   }
 

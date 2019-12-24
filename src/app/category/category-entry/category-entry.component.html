@@ -1,5 +1,10 @@
 <mat-toolbar>
         <span>Category</span>
+        <div class="add-container">
+            <button mat-icon-button (click)="newCategory()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>    
 </mat-toolbar>
 <mat-card>
     <form [formGroup]="categoryForm" #categoryFormDirective="ngForm" (ngSubmit)="onSave()">
@@ -25,7 +30,6 @@
         <div class="action-buttons-container">
             <button type="submit" class="action-button" color="primary" [disabled]="categoryForm.invalid"
                 mat-raised-button>Save</button>
-            <button type="button" class="action-button" (click)="newCategory()" mat-raised-button>New</button>
             <button type="button" class="action-button" [disabled]="!category._id" (click)="deleteCategory()"
                 mat-raised-button>Delete</button>
         </div>

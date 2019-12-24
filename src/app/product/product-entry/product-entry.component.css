@@ -20,3 +20,9 @@ form {
     background-color: #008000;
     opacity: 1.0 !important;
   }
+
+.add-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}

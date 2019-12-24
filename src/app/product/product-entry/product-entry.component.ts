@@ -94,6 +94,7 @@ export class ProductEntryComponent implements OnInit {
     let attributesControl = this.productForm.get('attributes') as FormArray;
     attributesControl.clear();
     this.updateView();
+    this.productService.clearRowSelection();
     this.product = new Product();
   }
 

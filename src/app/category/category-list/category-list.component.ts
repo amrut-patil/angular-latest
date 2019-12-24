@@ -29,6 +29,10 @@ export class CategoryListComponent implements OnInit {
       .subscribe(record => {
         this.updateList(record)
       });
+
+    this.categoryService.clearRowSelectionSource.subscribe(() => {
+      this.selectedRowIndex = "";
+    });
   }
 
   public refreshCategories() {
@@ -41,6 +45,7 @@ export class CategoryListComponent implements OnInit {
   updateList(record) {
     if (record.operation === ApplicationConstants.INSERT) {
       this.dataSource.data.push(record.category);
+      this.selectedRowIndex = record.category._id;
     } else if (record.operation === ApplicationConstants.UPDATE) {
       var foundIndex = this.dataSource.data.findIndex(x => x._id == record.category._id);
       if (foundIndex > -1)

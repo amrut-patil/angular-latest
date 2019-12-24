@@ -27,6 +27,10 @@ export class ProductListComponent implements OnInit {
       .subscribe(record => {
         this.updateList(record)
       });
+
+    this.productService.clearRowSelectionSource.subscribe(() => {
+      this.selectedRowIndex = "";
+    });
   }
 
   public refreshProducts() {
@@ -38,6 +42,7 @@ export class ProductListComponent implements OnInit {
   updateList(record) {
     if (record.operation === ApplicationConstants.INSERT) {
       this.dataSource.data.push(record.product);
+      this.selectedRowIndex = record.product._id;
     } else if (record.operation === ApplicationConstants.UPDATE) {
       var foundIndex = this.dataSource.data.findIndex(x => x._id == record.product._id);
 
