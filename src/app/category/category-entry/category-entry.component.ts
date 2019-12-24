@@ -73,10 +73,11 @@ export class CategoryEntryComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.categoryService.delete(this.category._id).then(() => this.newCategory())
+        this.categoryService.delete(this.category._id).then(() => this.newCategory()).catch((error) => {
+          ApplicationErrorHandler.addServerError(this.categoryForm, error, this.notificationService);
+        });
       }
     });
-
   }
 
   private getSavedCategory() {

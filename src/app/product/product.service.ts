@@ -40,8 +40,7 @@ export class ProductService {
           resolve();
         },
         (error: HttpErrorResponse) => {
-          console.error(error)
-          reject(error);
+          reject(error.error);
         });
     });
 

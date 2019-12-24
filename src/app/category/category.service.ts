@@ -40,8 +40,7 @@ export class CategoryService {
           resolve();
         },
         (error: HttpErrorResponse) => {
-          console.error(error)
-          reject(error);
+          reject(error.error);
         });
     });
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, AbstractControl, Validators, NgForm } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, switchMap, tap, finalize } from 'rxjs/operators';
@@ -104,13 +104,15 @@ export class ProductEntryComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.delete(this.product._id).then(() => this.newProduct())
+        this.productService.delete(this.product._id).then(() => this.newProduct()).catch((error) => {
+          ApplicationErrorHandler.addServerError(this.productForm, error, this.notificationService);
+        });
       }
     });
   }
 
   onSave() {
-    this.product.name =this.productForm.value['name'];
+    this.product.name = this.productForm.value['name'];
     this.product.categories = this.productForm.value['categories'];
 
     this.product.attributes = [];
