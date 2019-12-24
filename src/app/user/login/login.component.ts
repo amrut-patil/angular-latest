@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthenticationService } from '../authentication.service';
+import { ApplicationErrorHandler } from 'src/app/shared/errorHandler';
+import { NotificationService } from 'src/app/shared/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,7 @@ export class LoginComponent implements OnInit {
   public loginForm = this.formBuilder.group({});
 
   constructor(private authenticationService: AuthenticationService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -27,8 +29,10 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.value['password']
     }
 
-    this.authenticationService.login(request);
-    //alert(JSON.stringify(request));
+    this.authenticationService.login(request).then(() => {
+    }).catch((error) => {
+      ApplicationErrorHandler.addServerError(this.loginForm, error, this.notificationService);
+    });
   }
 
 }

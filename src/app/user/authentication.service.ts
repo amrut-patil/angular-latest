@@ -22,8 +22,7 @@ export class AuthenticationService {
             resolve(product);
           },
           (error: HttpErrorResponse) => {
-            console.error(error)
-            reject(error);
+            reject(error.error);
           });
     });
 
@@ -42,8 +41,7 @@ export class AuthenticationService {
             resolve();
           },
           (error: HttpErrorResponse) => {
-            console.error(error)
-            reject(error);
+            reject(error.error);
           });
     });
 

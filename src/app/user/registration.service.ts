@@ -19,8 +19,7 @@ export class RegistrationService {
             resolve(product as User);
           },
           (error: HttpErrorResponse) => {
-            console.error(error)
-            reject(error);
+            reject(error.error);
           });
     });
 

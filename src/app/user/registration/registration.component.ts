@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { User } from '../user';
 import { RegistrationService } from '../registration.service';
+import { ApplicationErrorHandler } from 'src/app/shared/errorHandler';
+import { NotificationService } from 'src/app/shared/notification.service';
+import { RegistrationValidator } from './registration-validator';
 
 @Component({
   selector: 'app-registration',
@@ -10,10 +13,12 @@ import { RegistrationService } from '../registration.service';
 })
 export class RegistrationComponent implements OnInit {
 
-  public user: User;
+  public user: User;  
   public registrationForm = this.formBuilder.group({});
+  public RegistrationValidator = RegistrationValidator;
 
-  constructor(private registrationService: RegistrationService, private formBuilder: FormBuilder) {
+  constructor(private registrationService: RegistrationService, private formBuilder: FormBuilder,
+    private notificationService: NotificationService) {
     this.user = new User();
   }
 
@@ -37,7 +42,7 @@ export class RegistrationComponent implements OnInit {
     this.registrationService.register(this.user).then((user) => {
       this.user = user;
     }).catch((error) => {
-      console.log(error);
+      ApplicationErrorHandler.addServerError(this.registrationForm, error, this.notificationService);
     });
   }
 
