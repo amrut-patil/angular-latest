@@ -41,6 +41,7 @@ export class RegistrationComponent implements OnInit {
 
     this.registrationService.register(this.user).then((user) => {
       this.user = user;
+      this.notificationService.showInformation("Registration complete !")
     }).catch((error) => {
       ApplicationErrorHandler.addServerError(this.registrationForm, error, this.notificationService);
     });

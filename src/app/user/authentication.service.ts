@@ -41,6 +41,7 @@ export class AuthenticationService {
             resolve();
           },
           (error: HttpErrorResponse) => {
+            this.router.navigate(['/login']);
             reject(error.error);
           });
     });
